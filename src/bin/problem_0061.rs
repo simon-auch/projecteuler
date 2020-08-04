@@ -44,7 +44,7 @@ fn recursion(
             if current.len() == 0 {
                 0
             } else {
-                match numbers[i].binary_search_by_key(&current[current.len() - 1].1, |(a, b)| *a) {
+                match numbers[i].binary_search_by_key(&current[current.len() - 1].1, |(a, _b)| *a) {
                     Ok(mut some_start) => {
                         while some_start > 0
                             && current[current.len() - 1].1 == numbers[i][some_start - 1].0
@@ -91,7 +91,7 @@ fn create_numbers<F: Fn(usize) -> usize>(f: F, d: usize) -> Vec<(u16, u16)> {
         .filter(|n| *n > min)
         .take_while(|n| *n <= max)
         .map(|n| ((n / div) as u16, (n % div) as u16))
-        .filter(|(a, b)| *b >= min_b)
+        .filter(|(_a, b)| *b >= min_b)
         .collect()
 }
 
