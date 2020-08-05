@@ -1,15 +1,26 @@
 ///Returns a vector with all prime numbers from 2..n
 pub fn primes(n: usize) -> Vec<usize> {
-  let mut ret = Vec::new();
+  if n <= 2 {
+    return vec![];
+  }
+  if n == 3 {
+    return vec![2];
+  }
+  //if n == 4{
+  //  return vec![3]
+  //}
+
+  let mut ret = vec![2];
   let mut sieve = Vec::new();
-  sieve.resize_with(n, || true);
-  for i in 2..n {
+  sieve.resize_with(n / 2, || true);
+
+  for i in 1..n / 2 {
     if sieve[i] {
-      ret.push(i);
-      let mut j = i + i;
-      while j < n {
+      ret.push(i * 2 + 1);
+      let mut j = 3 * i + 1;
+      while j < n / 2 {
         sieve[j] = false;
-        j += i;
+        j += 2 * i + 1;
       }
     }
   }
@@ -32,7 +43,7 @@ pub fn sieve_bool(n: usize) -> Vec<bool> {
   sieve
 }
 
-///Returns a vector where sieve_prime_biggest(n)[x] equals the greatest divisor of x, therefore it equals x iff x is prime
+///Returns a vector where sieve_prime_biggest(n)[x] equals the greatest prime divisor of x, therefore it equals x iff x is prime
 pub fn sieve_prime_biggest(n: usize) -> Vec<usize> {
   let mut sieve = Vec::new();
   sieve.resize_with(n, || 0);
@@ -68,6 +79,21 @@ impl PrimeIterator {
 pub enum PrimeOrFactor {
   Prime(usize),
   Factor(usize),
+}
+
+impl PrimeOrFactor {
+  pub fn is_prime(&self) -> bool {
+    match self {
+      PrimeOrFactor::Prime(_) => true,
+      _ => false,
+    }
+  }
+  pub fn get_prime(&self) -> usize {
+    match self {
+      PrimeOrFactor::Prime(p) => *p,
+      _ => panic!(),
+    }
+  }
 }
 
 impl Iterator for PrimeIterator {
@@ -207,7 +233,7 @@ pub fn euler_phi_list(n: usize) -> Vec<usize> {
     }
     let mut j = p;
     while j < phi.len() {
-      phi[j].0 *= (p - 1);
+      phi[j].0 *= p - 1;
       phi[j].1 *= p;
       j += p;
     }
