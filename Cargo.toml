@@ -10,3 +10,4 @@ default-run = "main"
 
 [dependencies]
 gcd = "2.*"
+num = "0.3"
