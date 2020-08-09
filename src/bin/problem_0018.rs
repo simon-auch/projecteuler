@@ -6,6 +6,8 @@ const NUMBERS: &[usize] = &[
     53, 67, 30, 73, 16, 69, 87, 40, 31, 04, 62, 98, 27, 23, 09, 70, 98, 73, 93, 38, 53, 60, 04, 23,
 ];
 
+//for some reason the existence of a `pub` method makes the linter think main is never used
+#[allow(dead_code)]
 fn main() {
     dbg!(solve(2, &NUMBERS));
     dbg!(solve(15, &NUMBERS));

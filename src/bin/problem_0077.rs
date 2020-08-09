@@ -22,7 +22,7 @@ fn solve(n: usize) -> usize {
     let mut i = 0;
     loop {
         i += 1;
-        if partition::partition_into(i, &primes) > n {
+        if partition::partition_into::<_, _, usize>(i, &primes) > n {
             return i;
         }
     }

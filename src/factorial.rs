@@ -1,8 +1,12 @@
-pub fn factorial(mut n: usize) -> usize {
-    let mut prod = 1;
+use num::traits::NumAssignRef;
+
+pub fn factorial<T: NumAssignRef>(mut n: usize) -> T {
+    let mut prod = T::one();
+    let mut mult = T::one();
     while n > 0 {
-        prod *= n;
+        prod *= &mult;
         n -= 1;
+        mult += T::one();
     }
     prod
 }

@@ -1,6 +1,3 @@
-mod factorial;
-use factorial::factorial;
-
 pub fn binomial_coefficient(n: usize, mut k: usize) -> usize {
     if k > n / 2 {
         k = n - k;

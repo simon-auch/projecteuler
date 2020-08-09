@@ -69,21 +69,21 @@ fn solve(n: usize) -> usize {
     let mut max = 0;
     for i in 0..NUMBERS.len() {
         for j in 0..NUMBERS[0].len() {
-            let a = (0..4)
+            let a = (0..n)
                 .take_while(|k| j + k < NUMBERS[0].len())
                 .map(|k| NUMBERS[i][j + k])
                 .product::<usize>();
             if a > max {
                 max = a;
             }
-            let a = (0..4)
+            let a = (0..n)
                 .take_while(|k| i + k < NUMBERS.len())
                 .map(|k| NUMBERS[i + k][j])
                 .product::<usize>();
             if a > max {
                 max = a;
             }
-            let a = (0..4)
+            let a = (0..n)
                 .take_while(|k| i + k < NUMBERS.len() && j + k < NUMBERS[0].len())
                 .map(|k| NUMBERS[i + k][j + k])
                 .product::<usize>();
@@ -91,7 +91,7 @@ fn solve(n: usize) -> usize {
                 max = a;
             }
 
-            let a = (0..4)
+            let a = (0..n)
                 .take_while(|k| i >= *k && j + k < NUMBERS[0].len())
                 .map(|k| NUMBERS[i - k][j + k])
                 .product::<usize>();

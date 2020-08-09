@@ -61,6 +61,26 @@ pub fn sieve_prime_biggest(n: usize) -> Vec<usize> {
   sieve
 }
 
+/// returns the sum of all divisors of n, including n itself
+/// sieve should be a prime sieve as returned by `sieve_prime_biggest`
+pub fn sum_of_divisors(mut n: usize, sieve: &[usize]) -> usize {
+  let start = n;
+  let mut prod = 1;
+  while n > 1 {
+    let p = sieve[n];
+    n /= p;
+    let mut exp = 1;
+    while sieve[n] == p {
+      exp += 1;
+      n /= p;
+    }
+    //dbg!((p, exp));
+    prod *= (p.pow(exp + 1) - 1) / (p - 1);
+    //dbg!(prod);
+  }
+  prod
+}
+
 struct PrimeIterator {
   primes: std::collections::binary_heap::BinaryHeap<std::cmp::Reverse<(usize, usize)>>,
   next: usize,

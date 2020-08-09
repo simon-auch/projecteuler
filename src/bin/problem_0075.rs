@@ -13,6 +13,7 @@ fn main() {
     dbg!(now.elapsed().as_secs_f64());
 }
 
+#[allow(dead_code)]
 fn solve(l: usize) -> usize {
     let mut sum = 0;
     //s must be even

@@ -15,7 +15,7 @@ fn main() {
 fn solve(s: usize, d: usize) -> Vec<Vec<(u16, u16)>> {
     let numbers: Vec<_> = (3..s + 1)
         .rev()
-        .map(|s| create_numbers(|n| Psn(s, n), d))
+        .map(|s| create_numbers(|n| psn(s, n), d))
         .collect();
     //dbg!(&numbers);
     //for i in 0..numbers.len() {
@@ -95,6 +95,6 @@ fn create_numbers<F: Fn(usize) -> usize>(f: F, d: usize) -> Vec<(u16, u16)> {
         .collect()
 }
 
-fn Psn(s: usize, n: usize) -> usize {
+fn psn(s: usize, n: usize) -> usize {
     ((s - 2) * (n * n) + 4 * n - s * n) / 2
 }

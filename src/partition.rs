@@ -37,41 +37,46 @@ pub fn partition_into<
     count.pop().unwrap()
 }
 
-//the following compute the same but require more memory (n² instead of n).
-//they can however be adapted to only require O(n) additional time to add the next value
-
 pub struct PartitionIterator<Sum> {
-    counts: Vec<Vec<Sum>>,
+    partitions: Vec<Sum>,
 }
 impl<Sum: NumAssignRef> PartitionIterator<Sum> {
     pub fn new() -> Self {
-        let mut counts = Vec::new();
-        counts.push(Vec::new());
-        counts[0].push(Sum::one());
-        Self { counts: counts }
+        let mut partitions = Vec::new();
+        partitions.push(Sum::one());
+        Self {
+            partitions: partitions,
+        }
     }
 }
 
+//using the recurrance (20) from https://mathworld.wolfram.com/PartitionFunctionP.html
 impl<Sum: NumAssignRef + Clone> Iterator for PartitionIterator<Sum> {
     type Item = Sum;
     fn next(&mut self) -> Option<Self::Item> {
-        let n = self.counts.len();
-        let mut new_count: Vec<Sum> = (0..=n).map(|_| Sum::zero()).collect();
-        //self.counts.push(count);
-        for j in 1..=n {
-            if self.counts[n - j].len() > 1 {
-                new_count[n - j] += self.counts[n - j].pop().unwrap();
-                self.counts[n - j].shrink_to_fit();
+        let mut next = Sum::zero();
+        for i in 1.. {
+            let j = if i % 2 == 1 {
+                (i as isize + 1) / 2
             } else {
-                new_count[n - j] += &self.counts[n - j][0];
+                -(i as isize + 1) / 2
+            };
+            let pentagonal = (j * (3 * j - 1) / 2) as usize;
+            //dbg!(pentagonal);
+            if pentagonal > self.partitions.len() {
+                break;
             }
-            //dbg!(i, j);
-            //new_count[n-j] += &new_count[n-j + 1];
-            let (start, end) = new_count.split_at_mut(n - j + 1);
-            start[n - j] += &end[0];
+            let val = &self.partitions[self.partitions.len() - pentagonal];
+            let exp = (i + 1) / 2;
+            if exp & 0b1 == 0 {
+                next -= val;
+            } else {
+                next += val;
+            }
         }
-        new_count.pop();
-        self.counts.push(new_count);
-        Some(self.counts[n][0].clone())
+
+        //dbg!(next);
+        self.partitions.push(next.clone());
+        Some(next)
     }
 }

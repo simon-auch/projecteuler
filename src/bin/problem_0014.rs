@@ -51,15 +51,3 @@ fn collatz(n: usize) -> usize {
         3 * n + 1
     }
 }
-
-//returns the possible previous values
-fn rev_collatz(n: usize) -> (usize, Option<usize>) {
-    (
-        2 * n,
-        if (n - 1) % 3 == 0 {
-            Some((n - 1) / 3)
-        } else {
-            None
-        },
-    )
-}

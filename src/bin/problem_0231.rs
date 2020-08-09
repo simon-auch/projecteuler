@@ -28,10 +28,11 @@ fn main() {
 }
 
 //should work but really slow because it factorizes quite a lot of numbers repeatedly
+#[allow(dead_code)]
 fn solve(n: usize, k: usize) -> usize {
     let mut sum = 0;
     for i in 1..=k {
-        let v = (n - k + i);
+        let v = n - k + i;
         let factorization = primes::factorize(v);
         //dbg!(&factorization);
         sum += factorization.iter().sum::<usize>();
@@ -44,6 +45,7 @@ fn solve(n: usize, k: usize) -> usize {
 }
 
 //same as solve, but only factorizes numbers once
+#[allow(dead_code)]
 fn solve_2(n: usize, mut k: usize) -> usize {
     if k > n / 2 {
         k = n - k;

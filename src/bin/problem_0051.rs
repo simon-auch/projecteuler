@@ -19,7 +19,7 @@ fn smallest_prime_family(n: usize) -> usize {
             _ => unreachable!(),
         })
         .map(|p| (p, prime_family_size(p)))
-        .filter(|(p, fs)| *fs == n)
+        .filter(|(_p, fs)| *fs == n)
         .nth(0)
         .unwrap()
         .0
