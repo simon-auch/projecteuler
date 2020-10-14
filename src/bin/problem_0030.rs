@@ -8,7 +8,10 @@ fn main() {
 fn solve(power: usize) -> usize {
     let mut sum = 0;
     //first find the upper limit of digits
-    let powers: Vec<usize> = [0usize,1,2,3,4,5,6,7,8,9].iter().map(|d| (*d).pow(power as u32)).collect();
+    let powers: Vec<usize> = [0usize, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        .iter()
+        .map(|d| (*d).pow(power as u32))
+        .collect();
     let max = {
         let mut a = 0;
         let mut b = 0;
@@ -22,10 +25,10 @@ fn solve(power: usize) -> usize {
     //dbg!(max);
     let mut min = 2;
     //dbg!(min);
-    for i in min..=max{
+    for i in min..=max {
         let dsum = helper::digits_iterator(i).map(|d| powers[d]).sum::<usize>();
         //dbg!(i,dsum);
-        if dsum == i{
+        if dsum == i {
             sum += i;
         }
     }

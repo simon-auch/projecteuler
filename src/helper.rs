@@ -8,6 +8,27 @@ pub fn digits(mut n: usize) -> Vec<usize> {
     digits
 }
 
+pub fn digits_iterator(n: usize) -> impl Iterator<Item = usize> {
+    DigitIter { n: n }
+}
+
+pub struct DigitIter {
+    n: usize,
+}
+
+impl Iterator for DigitIter {
+    type Item = usize;
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.n != 0 {
+            let ret = self.n % 10;
+            self.n /= 10;
+            Some(ret)
+        } else {
+            None
+        }
+    }
+}
+
 pub fn from_digits(digits: &[usize]) -> usize {
     let mut acc = 0;
     for d in digits.iter().rev() {
