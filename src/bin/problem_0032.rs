@@ -23,7 +23,7 @@ fn main() {
         1000,
     );
     assert_eq!(solve(), 45228);
-    //dbg!(solve());
+    dbg!(solve());
 }
 
 //the loops are just soo much more readable if not moved around
