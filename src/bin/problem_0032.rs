@@ -4,13 +4,30 @@ mod helper;
 fn main() {
     //called multiple times with different loop counts in order to check if the compiler just removes it
     //if it optimized it away the measured time per loop would decrease with increased loop count
-    helper::time_it(|| {solve();}, 10);
-    helper::time_it(|| {solve();}, 100);
-    helper::time_it(|| {solve();}, 1000);
-    assert_eq!(solve(),45228);
+    helper::time_it(
+        || {
+            solve();
+        },
+        10,
+    );
+    helper::time_it(
+        || {
+            solve();
+        },
+        100,
+    );
+    helper::time_it(
+        || {
+            solve();
+        },
+        1000,
+    );
+    assert_eq!(solve(), 45228);
     //dbg!(solve());
 }
 
+//the loops are just soo much more readable if not moved around
+#[rustfmt::skip]
 fn solve() -> usize {
     //let mut digits: Vec<usize> = digits.iter().cloned().collect();
     //digits.sort();
