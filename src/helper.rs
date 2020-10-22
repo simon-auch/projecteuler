@@ -68,3 +68,10 @@ pub fn time_it<F: Fn() -> ()>(f: F, loops: usize) {
     }
     dbg!(now.elapsed().as_secs_f64() / loops as f64);
 }
+
+pub fn check_bench<F: Fn() -> ()>(f: F) {
+    time_it(|| f(), 1);
+    time_it(|| f(), 10);
+    time_it(|| f(), 100);
+    time_it(|| f(), 1000);
+}

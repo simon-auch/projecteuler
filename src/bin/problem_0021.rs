@@ -18,7 +18,7 @@ fn solve_1(n: usize) -> usize {
     sum
 }
 
-fn sum_divisors_1(mut n: usize) -> usize {
+fn sum_divisors_1(n: usize) -> usize {
     let mut sum = 0;
     for i in 1..n {
         if n % i == 0 {

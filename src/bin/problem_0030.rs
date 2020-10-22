@@ -23,7 +23,7 @@ fn solve(power: usize) -> usize {
         a
     };
     //dbg!(max);
-    let mut min = 2;
+    let min = 2;
     //dbg!(min);
     for i in min..=max {
         let dsum = helper::digits_iterator(i).map(|d| powers[d]).sum::<usize>();

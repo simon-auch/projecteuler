@@ -23,7 +23,7 @@ fn recurring_cycle_digits(mut num: usize, den: usize) -> Vec<usize> {
         if num == 0 {
             break;
         }
-        num = (num * 10);
+        num = num * 10;
         let i = cycle.iter().enumerate().filter(|(_i, x)| **x == num).nth(0);
         if let Some((i, _x)) = i {
             cycle.drain(0..i);

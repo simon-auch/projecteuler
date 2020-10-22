@@ -4,12 +4,11 @@ fn main() {
 }
 
 fn solve(n: usize) -> usize {
-    let numbers = (n - 1) * 2 + 1;
     let mut last = 1;
     let mut sum = 1;
     let mut stepsize = 2;
     for _ in 0..n / 2 {
-        for i in 1..=4 {
+        for _i in 1..=4 {
             last = last + stepsize;
             sum += last;
         }

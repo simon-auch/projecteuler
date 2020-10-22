@@ -30,6 +30,7 @@ fn main() {
         },
         100000,
     );
+    assert_eq!(solve(), 100);
     dbg!(solve());
 }
 
@@ -63,9 +64,7 @@ fn solve() -> usize {
                 let d_1 = den_i % 10;
                 let d_2 = den_i / 10;
 
-                if n_1 == d_1 && n_2 == num && d_2 == den
-                    || n_2 == d_2 && n_1 == num && d_1 == den
-                    || n_1 == d_2 && n_2 == num && d_1 == den
+                if n_1 == d_2 && n_2 == num && d_1 == den
                     || n_2 == d_1 && n_1 == num && d_2 == den
                 {
                     //dbg!(num,den,num_i,den_i,num_red,den_red);

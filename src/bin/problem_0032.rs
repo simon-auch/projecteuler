@@ -78,7 +78,7 @@ fn solve() -> usize {
         }
     }
     //dbg!(&acc);
-    for a_1 in (1..9){
+    for a_1 in 1..9{
     for a_2 in (1..10).filter(|&x| x!=a_1 && x != 5){
         let a = a_1*10 + a_2;
         'b_start: 
