@@ -152,13 +152,13 @@ pub fn primes_iterator() -> impl Iterator<Item = PrimeOrFactor> {
 }
 
 ///returns (floor(sqrt(n)), ceil(sqrt(n)))
-fn sqrt(n: usize) -> (usize, usize) {
+pub fn sqrt(n: usize) -> (usize, usize) {
     //first we do a really shitty sqrt approximation
     use core::cmp::Ordering;
     let mut sqrt_range = (0, n);
     while sqrt_range.1 > 1 {
         let mid = sqrt_range.0 + sqrt_range.1 / 2;
-        match (mid * mid).cmp(&n) {
+        match mid.saturating_mul(mid).cmp(&n) {
             Ordering::Equal => {
                 sqrt_range = (mid, 1);
                 break;
