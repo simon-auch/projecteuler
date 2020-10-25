@@ -11,8 +11,6 @@ fn main() {
     dbg!(solve(1_000_000));
 }
 
-//n represents the number of digits
-//m represents the length of the sequence to find
 fn solve(n: usize) -> usize {
     let primes = primes::primes(n);
     let mut primes_bool = Vec::new();
@@ -52,6 +50,5 @@ fn solve(n: usize) -> usize {
             }
         }
     }
-
     0
 }
