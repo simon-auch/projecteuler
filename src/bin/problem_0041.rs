@@ -26,6 +26,7 @@ fn is_pandigital(n: usize) -> usize {
     let mut digits = [false; 9];
     let mut max_digit = 0;
     for d in helper::digits_iterator(n) {
+        let d = d as usize;
         if d == 0 {
             return 0;
         }

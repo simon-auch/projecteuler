@@ -23,6 +23,7 @@ fn solve() -> usize {
                 break;
             }
             for d in digits {
+                let d = d as usize;
                 if d == 0 {
                     break 'loop_j;
                 }

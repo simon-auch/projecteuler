@@ -1,14 +1,14 @@
 //returns the digits of the number
-pub fn digits(mut n: usize) -> Vec<usize> {
+pub fn digits(mut n: usize) -> Vec<u8> {
     let mut digits = vec![];
     while n != 0 {
-        digits.push(n % 10);
+        digits.push((n % 10) as u8);
         n = n / 10;
     }
     digits
 }
 
-pub fn digits_iterator(n: usize) -> impl Iterator<Item = usize> {
+pub fn digits_iterator(n: usize) -> impl Iterator<Item = u8> {
     DigitIter { n: n }
 }
 
@@ -17,10 +17,10 @@ pub struct DigitIter {
 }
 
 impl Iterator for DigitIter {
-    type Item = usize;
+    type Item = u8;
     fn next(&mut self) -> Option<Self::Item> {
         if self.n != 0 {
-            let ret = self.n % 10;
+            let ret = (self.n % 10) as u8;
             self.n /= 10;
             Some(ret)
         } else {
@@ -29,13 +29,11 @@ impl Iterator for DigitIter {
     }
 }
 
-pub fn from_digits(digits: &[usize]) -> usize {
-    let mut acc = 0;
-    for d in digits.iter().rev() {
-        acc *= 10;
-        acc += d;
-    }
-    acc
+pub fn from_digits(digits: &[u8]) -> usize {
+    digits.iter().fold(0, |mut acc, d| {
+        acc *= 10usize;
+        acc + *d as usize
+    })
 }
 //concatenates two numbers n,m -> nm
 pub fn concat_numbers(n: usize, m: usize) -> usize {

@@ -28,7 +28,7 @@ fn solve(n: usize, m: usize) -> Vec<Vec<usize>> {
             (*p, {
                 let mut d = helper::digits(*p);
                 d.sort();
-                d.iter().fold(0, |acc, d| acc * 10 + d)
+                helper::from_digits(&d)
             })
         })
         .collect();

@@ -29,7 +29,7 @@ fn prime_family_size(p: usize) -> usize {
     //save all digits that are 0, 1, 2 ,...
     let mut digit_groups = vec![vec![]; 10];
     for (i, d) in digits.iter().enumerate() {
-        digit_groups[*d].push(i);
+        digit_groups[*d as usize].push(i);
     }
     //dbg!(&digit_groups);
     //now for each subset (except the empy one) for each digit group compute the prime family size and take the max

@@ -66,7 +66,7 @@ fn solve() -> usize {
                 let mut digits: Vec<_> = helper::digits_iterator(c).collect();
                 digits.sort();
                 digits.dedup();
-                if digits.len() == 4 && digits.into_iter().all(|d| d!=0 && d!=a && d!=b_1 && d!=b_2 && d!=b_3 && d!=b_4){
+                if digits.len() == 4 && digits.into_iter().map(|d| d as usize).all(|d| d!=0 && d!=a && d!=b_1 && d!=b_2 && d!=b_3 && d!=b_4){
                     //dbg!(a,b,c);
                     acc.push(c);
                 }
@@ -94,7 +94,7 @@ fn solve() -> usize {
                 let mut digits: Vec<_> = helper::digits_iterator(c).collect();
                 digits.sort();
                 digits.dedup();
-                if digits.len() == 4 && digits.into_iter().all(|d| d!= 0 && d!=a_1 && d!=a_2 && d!=b_1 && d!=b_2 && d!=b_3){
+                if digits.len() == 4 && digits.into_iter().map(|d| d as usize).all(|d| d!= 0 && d!=a_1 && d!=a_2 && d!=b_1 && d!=b_2 && d!=b_3){
                     //dbg!(a,b,c);
                     acc.push(c);
                 }

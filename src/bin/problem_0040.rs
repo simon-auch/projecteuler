@@ -32,6 +32,6 @@ fn get_at_index(n: usize) -> usize {
         let j = (n - current_index) % current_digits;
         let mut digits = helper::digits(i);
         digits.reverse();
-        return digits[j];
+        return digits[j] as usize;
     }
 }
