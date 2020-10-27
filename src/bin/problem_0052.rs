@@ -17,7 +17,7 @@ fn main() {
 }
 
 fn solve() -> usize {
-    for exp in 1.. {
+    for exp in 5.. {
         let ten = 10usize.pow(exp as u32);
         for i in 0..ten {
             let i = ten + i;
