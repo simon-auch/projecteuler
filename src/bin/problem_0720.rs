@@ -1,73 +1,18 @@
 use projecteuler::permutation;
 
 fn main() {
-    assert_eq!(custom_permutation_index(solve(3), 1_000_000_007), 2294);
-    assert_eq!(custom_permutation_index(solve(5), 1_000_000_007), 641839204);
+    assert_eq!(
+        permutation::permutation_rank_mod(solve(3), 1_000_000_007),
+        2294
+    );
+    assert_eq!(
+        permutation::permutation_rank_mod(solve(5), 1_000_000_007),
+        641839204
+    );
     assert_eq!(solve_2(3, 1_000_000_007), 2294);
     assert_eq!(solve_2(5, 1_000_000_007), 641839204);
     dbg!(solve_2(25, 1_000_000_007));
-    //dbg!(custom_permutation_index(solve(25), 1_000_000_007));
-}
-
-//basically the same as permutation::permutation_index as the time of writing but with modular arithmetic and in much faster
-fn custom_permutation_index(mut perm: Vec<u32>, m: usize) -> usize {
-    dbg!("start");
-    let mut acc = 0u128;
-    let mut fact = 1;
-    dbg!("normalizing permutation");
-    normalize_permutation(&mut perm);
-    dbg!("computing index");
-    for i in 0..perm.len() {
-        let d = perm[perm.len() - i - 1];
-        acc += fact * (d - 1) as u128;
-        acc %= m as u128;
-        fact *= (i + 1) as u128;
-        fact %= m as u128;
-    }
-    acc as usize
-}
-
-//normalizes a permutation:
-//(1,2,3,4) -> (1,1,1,1)
-//(1,3,4,2) -> (1,2,2,1)
-//(4,3,2,1) -> (4,3,2,1)
-//basically it replaces every number with 1 + the amount of smaller numbers that follow
-//makes it much easier to compute the permutation index
-fn normalize_permutation(perm: &mut [u32]) {
-    let mut vec: Vec<_> = perm.iter().cloned().enumerate().collect();
-    let mut out: Vec<_> = Vec::new();
-    out.resize_with(vec.len(), || (0usize, 0u32));
-
-    let mut exp = 0;
-    while 2usize.pow(exp) < vec.len() {
-        //elements the merge step would consider from each slice
-        let m = 2usize.pow(exp);
-        for (chunk, chunk_out) in vec.chunks_mut(2 * m).zip(out.chunks_mut(2 * m)) {
-            if chunk.len() <= m {
-                continue;
-            }
-            let left = &chunk[0..m];
-            let right = &chunk[m..];
-
-            let mut i_left = 0;
-            let mut i_right = 0;
-
-            for out in chunk_out.iter_mut() {
-                if i_right == right.len()
-                    || i_left < left.len() && left[i_left].1 < right[i_right].1
-                {
-                    *out = left[i_left];
-                    i_left += 1;
-                } else {
-                    *out = right[i_right];
-                    perm[right[i_right].0] -= i_left as u32;
-                    i_right += 1;
-                }
-            }
-        }
-        core::mem::swap(&mut vec, &mut out);
-        exp += 1;
-    }
+    //dbg!(permutation::permutation_rank_mod(solve(25), 1_000_000_007));
 }
 
 fn solve(exp: usize) -> Vec<u32> {
@@ -131,7 +76,7 @@ fn solve_2(exp: usize, m: usize) -> usize {
         }
     }
 
-    //compute index of the permutation
+    //compute rank of the permutation
     let mut acc = 0u128;
     let mut fact = 1;
     for i in 0..perm.len() {
