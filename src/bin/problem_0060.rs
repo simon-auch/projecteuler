@@ -1,9 +1,7 @@
 //works but still a bit slow (around 40s)
 
-#[path = "../helper.rs"]
-mod helper;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::helper;
+use projecteuler::primes;
 
 const SET_SIZE: usize = 5;
 fn main() {

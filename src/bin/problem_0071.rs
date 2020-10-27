@@ -1,10 +1,8 @@
 #![feature(test)]
 
-#[path = "../fraction.rs"]
-mod fraction;
-#[path = "../helper.rs"]
-mod helper;
 use fraction::Fraction;
+use projecteuler::fraction;
+use projecteuler::helper;
 
 fn main() {
     dbg!(solve(8));

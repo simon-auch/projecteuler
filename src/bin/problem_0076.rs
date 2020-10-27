@@ -1,5 +1,4 @@
-#[path = "../partition.rs"]
-mod partition;
+use projecteuler::partition;
 
 fn main() {
     //dbg!(binomial::binomial_coefficient(100, 50));

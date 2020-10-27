@@ -1,7 +1,4 @@
-#[path = "../helper.rs"]
-mod helper;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::helper;
 
 fn main() {
     //gets optimized into a nop I think

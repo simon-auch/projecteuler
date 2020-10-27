@@ -1,7 +1,5 @@
-#[path = "../helper.rs"]
-mod helper;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::helper;
+use projecteuler::primes;
 
 fn main() {
     //gets optimized into a nop I think
@@ -15,7 +13,7 @@ fn solve() -> usize {
     //since 1+2+3+4+5+6+7+8+9 divisible by 3 cannot be 9 pandigital
     //same goes for 8
     let primes = primes::sieve_bool(7654321);
-    for (p, _) in primes.iter().enumerate().filter(|(p, b)| **b).rev() {
+    for (p, _) in primes.iter().enumerate().filter(|(_p, b)| **b).rev() {
         //dbg!(p);
         if is_pandigital(p) > 0 {
             return p;

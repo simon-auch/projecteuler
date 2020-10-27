@@ -1,8 +1,8 @@
 use num::ToPrimitive;
 use num::Zero;
 use num::{BigUint, Integer};
-#[path = "../factorial.rs"]
-mod factorial;
+
+use projecteuler::factorial;
 
 fn main() {
     dbg!(solve(100));

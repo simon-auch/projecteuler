@@ -1,9 +1,8 @@
 #![feature(test)]
 #![feature(map_first_last)]
 
-#[path = "../fraction.rs"]
-mod fraction;
 use fraction::Fraction;
+use projecteuler::fraction;
 
 //the fastest one is definitely solve5.
 

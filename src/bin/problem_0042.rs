@@ -1,5 +1,4 @@
-#[path = "../helper.rs"]
-mod helper;
+use projecteuler::helper;
 
 static WORDS: &[&'static str] = &[
     "A",

@@ -1,5 +1,4 @@
-#[path = "../helper.rs"]
-mod helper;
+use projecteuler::helper;
 
 fn main() {
     //called multiple times with different loop counts in order to check if the compiler just removes it

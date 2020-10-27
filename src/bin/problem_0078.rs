@@ -1,7 +1,5 @@
-#[path = "../partition.rs"]
-mod partition;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::partition;
+use projecteuler::primes;
 
 use num::BigUint;
 

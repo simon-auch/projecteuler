@@ -19,10 +19,8 @@ wie viele brüche teilen sich x/8 und x/12?
 
 1/12,1/6,1/4,1/3,5/12,1/2,7/12,2/6,3/4,5/6,11/12
 */
-#[path = "../helper.rs"]
-mod helper;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::helper;
+use projecteuler::primes;
 
 fn main() {
     dbg!(solve(8));

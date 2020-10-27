@@ -8,10 +8,7 @@ a²+b²=(s-a-b)²
 <=> 2sa + 2sb = s² + 2ab
 <=> a = (s*(s-2b))/(2*(s-b))
 */
-
-#[path = "../fraction.rs"]
-mod fraction;
-use fraction::Fraction;
+use projecteuler::fraction::Fraction;
 
 fn main() {
     dbg!(solve(1_000));

@@ -1,7 +1,5 @@
-#[path = "../factorial.rs"]
-mod factorial;
-#[path = "../helper.rs"]
-mod helper;
+use projecteuler::factorial;
+use projecteuler::helper;
 
 fn main() {
     helper::check_bench(|| {

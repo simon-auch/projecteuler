@@ -1,5 +1,4 @@
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::primes;
 
 fn main() {
     let mut total_counters = vec![0; 20];

@@ -1,5 +1,4 @@
-#[path = "../permutation.rs"]
-mod permutation;
+use projecteuler::permutation;
 
 fn main() {
     assert_eq!(custom_permutation_index(solve(3), 1_000_000_007), 2294);

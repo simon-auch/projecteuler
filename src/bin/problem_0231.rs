@@ -1,7 +1,5 @@
-#[path = "../helper.rs"]
-mod helper;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::helper;
+use projecteuler::primes;
 
 fn main() {
     //dbg!(solve(10, 3));

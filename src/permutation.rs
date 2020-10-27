@@ -1,4 +1,5 @@
-mod factorial;
+use crate::factorial;
+
 pub struct PermutationIterator {
     next: usize,
     elements: usize,

@@ -1,6 +1,5 @@
-#[path = "../fraction.rs"]
-mod fraction;
 use fraction::Fraction;
+use projecteuler::fraction;
 
 fn main() {
     //dbg!(solve(120));

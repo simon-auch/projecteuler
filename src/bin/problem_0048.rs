@@ -1,7 +1,5 @@
-#[path = "../helper.rs"]
-mod helper;
-#[path = "../modulo.rs"]
-mod modulo;
+use projecteuler::helper;
+use projecteuler::modulo;
 
 fn main() {
     helper::check_bench(|| {

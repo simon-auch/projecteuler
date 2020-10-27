@@ -1,5 +1,4 @@
-#[path = "../factorial.rs"]
-mod factorial;
+use projecteuler::factorial;
 
 fn main() {
     dbg!(solve(1, vec![0, 1, 2]));

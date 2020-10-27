@@ -1,5 +1,4 @@
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::primes;
 
 fn main() {
     dbg!(solve(5));

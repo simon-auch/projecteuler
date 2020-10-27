@@ -1,5 +1,4 @@
-#[path = "../binomial.rs"]
-mod binomial;
+use projecteuler::binomial;
 
 fn main() {
     dbg!(solve(2));

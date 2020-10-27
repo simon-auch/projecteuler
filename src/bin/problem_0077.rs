@@ -1,7 +1,5 @@
-#[path = "../partition.rs"]
-mod partition;
-#[path = "../primes.rs"]
-mod primes;
+use projecteuler::partition;
+use projecteuler::primes;
 
 fn main() {
     //dbg!(binomial::binomial_coefficient(100, 50));

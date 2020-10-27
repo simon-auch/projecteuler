@@ -1,7 +1,5 @@
-#[path = "../fraction.rs"]
-mod fraction;
-#[path = "../helper.rs"]
-mod helper;
+use projecteuler::fraction;
+use projecteuler::helper;
 
 fn main() {
     //called multiple times with different loop counts in order to check if the compiler just removes it
@@ -64,8 +62,7 @@ fn solve() -> usize {
                 let d_1 = den_i % 10;
                 let d_2 = den_i / 10;
 
-                if n_1 == d_2 && n_2 == num && d_1 == den
-                    || n_2 == d_1 && n_1 == num && d_2 == den
+                if n_1 == d_2 && n_2 == num && d_1 == den || n_2 == d_1 && n_1 == num && d_2 == den
                 {
                     //dbg!(num,den,num_i,den_i,num_red,den_red);
                     acc = fraction::Fraction::new(acc.num() * num_red, acc.den() * den_red);
