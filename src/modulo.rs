@@ -1,30 +1,20 @@
-/// Returns n.pow(exp) % m but tries to do the power efficiently and keeps the numbers small (best effort)
-pub fn modulo_power(mut n: usize, mut exp: usize, m: usize) -> usize {
-    //the basic idea is to convert n^exp%m into (n^(exp/2)%m)²%m
-    let mut acc = 1;
-    while exp != 0 {
-        if exp & 0b1 == 1 {
-            acc *= n;
-            acc %= m;
-        }
-        n *= n;
-        n %= m;
-        exp >>= 1;
-    }
-    acc
-}
+use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
 
-pub fn modulo_power_u128(mut n: u128, mut exp: u128, m: u128) -> u128 {
+/// Returns n.pow(exp) % m but tries to do the power efficiently and keeps the numbers small (best effort)
+pub fn modulo_power<Int>(mut n: Int, mut exp: Int, m: Int) -> Int
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+{
     //the basic idea is to convert n^exp%m into (n^(exp/2)%m)²%m
-    let mut acc = 1;
-    while exp != 0 {
-        if exp & 0b1 == 1 {
-            acc *= n;
-            acc %= m;
+    let mut acc = Int::one();
+    while exp != Int::zero() {
+        if exp & Int::one() == Int::one() {
+            acc = acc * n;
+            acc = acc % m;
         }
-        n *= n;
-        n %= m;
-        exp >>= 1;
+        n = n * n;
+        n = n % m;
+        exp = exp >> 1;
     }
     acc
 }
