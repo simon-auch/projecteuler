@@ -15,7 +15,7 @@ fn solve(n: usize) -> usize {
     let m = 10_000_000_000;
     let mut acc = 0;
     for i in 1..=n {
-        acc += modulo::modulo_power_u128(i as u128, i as u128, m as u128) as usize;
+        acc += modulo::modulo_power(i as u128, i as u128, m as u128) as usize;
         acc %= m;
     }
     acc
