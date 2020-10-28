@@ -1,27 +1,40 @@
+use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
+
 //returns the digits of the number
-pub fn digits(mut n: usize) -> Vec<u8> {
+pub fn digits<Int>(mut n: Int) -> Vec<u8>
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+{
     let mut digits = vec![];
-    while n != 0 {
-        digits.push((n % 10) as u8);
-        n = n / 10;
+    let ten = Int::from_usize(10usize).unwrap();
+    while n != Int::zero() {
+        digits.push((n % ten).as_());
+        n = n / ten;
     }
     digits
 }
 
-pub fn digits_iterator(n: usize) -> impl Iterator<Item = u8> {
+pub fn digits_iterator<Int>(n: Int) -> impl Iterator<Item = u8>
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+{
     DigitIter { n: n }
 }
 
-pub struct DigitIter {
-    n: usize,
+pub struct DigitIter<Int> {
+    n: Int,
 }
 
-impl Iterator for DigitIter {
+impl<Int> Iterator for DigitIter<Int>
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+{
     type Item = u8;
     fn next(&mut self) -> Option<Self::Item> {
-        if self.n != 0 {
-            let ret = (self.n % 10) as u8;
-            self.n /= 10;
+        let ten = Int::from_usize(10usize).unwrap();
+        if self.n != Int::zero() {
+            let ret = (self.n % ten).as_();
+            self.n = self.n / ten;
             Some(ret)
         } else {
             None
@@ -29,12 +42,35 @@ impl Iterator for DigitIter {
     }
 }
 
-pub fn from_digits(digits: &[u8]) -> usize {
-    digits.iter().fold(0, |mut acc, d| {
-        acc *= 10usize;
-        acc + *d as usize
+pub fn from_digits<Int, I, B>(digits: I) -> Int
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+    I: IntoIterator<Item = B>,
+    B: core::borrow::Borrow<u8>,
+{
+    let ten = Int::from_usize(10usize).unwrap();
+    digits.into_iter().fold(Int::zero(), |mut acc, d| {
+        acc = acc * ten;
+        acc + Int::from_u8(*(d.borrow())).unwrap()
     })
 }
+
+pub fn reverse_digits<Int>(n: Int) -> Int
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+{
+    from_digits(digits_iterator(n))
+}
+
+pub fn is_palindrome<Int>(n: Int) -> bool
+where
+    Int: PrimInt + AsPrimitive<u8> + FromPrimitive,
+{
+    digits_iterator(n)
+        .zip(digits(n).iter().rev())
+        .all(|(d1, &d2)| d1 == d2)
+}
+
 //concatenates two numbers n,m -> nm
 pub fn concat_numbers(n: usize, m: usize) -> usize {
     //first find out how many digits m has

@@ -22,7 +22,7 @@ fn solve(n: usize, m: usize) -> Vec<Vec<usize>> {
         .expect_err("1000 is not prime");
     let primes: Vec<usize> = primes[barrier..].iter().cloned().collect();
 
-    let mut prime_digits: Vec<_> = primes
+    let mut prime_digits: Vec<(usize, usize)> = primes
         .iter()
         .map(|p| {
             (*p, {
