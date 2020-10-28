@@ -243,7 +243,57 @@ pub fn factorize_count(n: usize) -> Vec<(usize, usize)> {
 }
 
 pub fn is_prime(n: usize) -> bool {
-    factorize(n).len() == 1
+    //factorize(n).len() == 1
+    miller(n)
+}
+
+//see https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
+pub fn miller(n: usize) -> bool {
+    if n == 0 || n & 0b1 == 0 {
+        return false;
+    }
+    let m = n - 1;
+    let r = m.trailing_zeros() as usize;
+    let d = m / (1 << r);
+    //dbg!(n, m, r, d);
+
+    let witnesses: &[usize] = if n < 2_047 {
+        &[2]
+    } else if n < 1_373_653 {
+        &[2, 3]
+    } else if n < 9_080_191 {
+        &[31, 73]
+    } else if n < 25_326_001 {
+        &[2, 3, 5]
+    } else if n < 3_215_031_751 {
+        &[2, 3, 5, 7]
+    } else if n < 4_759_123_141 {
+        &[2, 7, 61]
+    } else if n < 1_122_004_669_633 {
+        &[2, 13, 23, 1662803]
+    } else if n < 2_152_302_898_747 {
+        &[2, 3, 5, 7, 11]
+    } else if n < 3_474_749_660_383 {
+        &[2, 3, 5, 7, 11, 13]
+    } else if n < 341_550_071_728_321 {
+        &[2, 3, 5, 7, 11, 13, 17]
+    } else {
+        panic!("To big for miller");
+    };
+    'witness: for &a in witnesses {
+        let mut x = crate::modulo::modulo_power(a, d, n);
+        if x == 1 || x == n - 1 {
+            continue 'witness;
+        }
+        for _ in 0..r - 1 {
+            x = (x * x) % n;
+            if x == n - 1 {
+                continue 'witness;
+            }
+        }
+        return false;
+    }
+    return true;
 }
 
 //gibt die anzahl an teilerfremden zahlen zurück
