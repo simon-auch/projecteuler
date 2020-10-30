@@ -1,5 +1,6 @@
 pub mod binomial;
 pub mod factorial;
+pub mod fibonacci;
 pub mod fraction;
 pub mod helper;
 pub mod modulo;
