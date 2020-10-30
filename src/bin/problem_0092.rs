@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
@@ -36,7 +37,7 @@ fn solve() -> usize {
 }
 
 fn next(n: usize) -> usize {
-    helper::digits_iterator(n)
+    digits::digits_iterator(n)
         .map(|d| (d * d) as usize)
         .sum::<usize>()
 }

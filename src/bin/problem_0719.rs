@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
@@ -21,7 +22,7 @@ fn solve(n: usize) -> usize {
 }
 
 fn is_s_number((i, sq): &(usize, usize)) -> bool {
-    let digits: Vec<u8> = helper::digits(*sq);
+    let digits: Vec<u8> = digits::digits(*sq);
     recursion(&digits, *i)
 }
 
@@ -29,7 +30,7 @@ fn recursion(digits: &[u8], total_left: usize) -> bool {
     if digits.len() == 0 {
         panic!();
     }
-    let max: usize = helper::from_digits(digits.iter().rev());
+    let max: usize = digits::from_digits(digits.iter().rev());
     if max == total_left {
         return true;
     }
@@ -39,7 +40,7 @@ fn recursion(digits: &[u8], total_left: usize) -> bool {
     //max > total_left
     for split in 1..digits.len() {
         let (start, end) = digits.split_at(split);
-        let inc: usize = helper::from_digits(start.iter().rev());
+        let inc: usize = digits::from_digits(start.iter().rev());
         if inc > total_left {
             break;
         } else {

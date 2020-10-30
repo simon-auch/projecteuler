@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 /*
@@ -21,11 +22,11 @@ fn solve() -> usize {
         let ten = 10usize.pow(exp as u32);
         for i in 0..ten {
             let i = ten + i;
-            let mut digits = helper::digits(i);
+            let mut digits = digits::digits(i);
             digits.sort();
             for jf in 2..=6 {
                 let j = i * jf;
-                let mut digits_j = helper::digits(j);
+                let mut digits_j = digits::digits(j);
                 digits_j.sort();
                 if digits != digits_j {
                     break;

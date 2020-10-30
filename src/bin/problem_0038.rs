@@ -1,8 +1,11 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
     //gets optimized into a nop I think
-    //helper::check_bench(|| {solve(1_000_000);});
+    helper::check_bench(|| {
+        solve();
+    });
     //assert_eq!(solve(), 0);
     dbg!(solve());
 }
@@ -16,8 +19,8 @@ fn solve() -> usize {
         let mut digits_total = 0usize;
         'loop_j: for j in 1..=9 {
             let prod = i * j;
-            acc = helper::concat_numbers(acc, prod);
-            let digits = helper::digits(prod);
+            acc = digits::concat_numbers(acc, prod);
+            let digits = digits::digits(prod);
             digits_total += digits.len();
             if digits_total > 9 {
                 break;

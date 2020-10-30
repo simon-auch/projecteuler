@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 use projecteuler::primes;
 
@@ -20,7 +21,7 @@ fn solve(n: usize) -> usize {
 }
 
 fn is_circular_prime(sieve_bool: &[bool], mut p: usize) -> bool {
-    let len = helper::digits_iterator(p).count();
+    let len = digits::digits_iterator(p).count();
     let mult = 10usize.pow((len - 1) as u32);
     for _ in 0..len - 1 {
         let d = p % 10;

@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 use projecteuler::primes;
 
@@ -22,7 +23,7 @@ fn is_answer(n: &usize) -> bool {
         return false;
     }
     //dbg!(n, square);
-    helper::digits_iterator(square)
+    digits::digits_iterator(square)
         .step_by(2)
         .zip([1, 2, 3, 4, 5, 6, 7, 8, 9, 0].iter().rev())
         .all(|(a, b)| a == *b)

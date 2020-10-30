@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
@@ -11,7 +12,7 @@ fn main() {
 fn solve(n: usize) -> usize {
     (1..n)
         .filter(|i| i % 10 != 0)
-        .map(|i| i + helper::reverse_digits(i))
-        .filter(|&i| helper::digits_iterator(i).all(|d| d & 0b1 == 1))
+        .map(|i| i + digits::reverse_digits(i))
+        .filter(|&i| digits::digits_iterator(i).all(|d| d & 0b1 == 1))
         .count()
 }

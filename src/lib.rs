@@ -1,4 +1,5 @@
 pub mod binomial;
+pub mod digits;
 pub mod factorial;
 pub mod fibonacci;
 pub mod fraction;

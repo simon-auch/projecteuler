@@ -1,4 +1,4 @@
-use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
+use num::traits::PrimInt;
 pub struct FibonacciIterator<Int> {
     a: Int,
     b: Int,

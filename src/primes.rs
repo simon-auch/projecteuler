@@ -64,7 +64,6 @@ pub fn sieve_prime_biggest(n: usize) -> Vec<usize> {
 /// returns the sum of all divisors of n, including n itself
 /// sieve should be a prime sieve as returned by `sieve_prime_biggest`
 pub fn sum_of_divisors(mut n: usize, sieve: &[usize]) -> usize {
-    let start = n;
     let mut prod = 1;
     while n > 1 {
         let p = sieve[n];
@@ -196,7 +195,7 @@ pub fn factorize(n: usize) -> Vec<usize> {
         return vec![n];
     }
 
-    let (sqrt_floor, sqrt_ceil) = sqrt(n);
+    let (_sqrt_floor, sqrt_ceil) = sqrt(n);
     //only one factor can be bigger than the sqrt.
     //if no factor is smaller or equal the sqrt, the number is prime (as it cannot have factors)
 
@@ -296,7 +295,7 @@ pub fn miller(n: usize) -> bool {
     return true;
 }
 
-//gibt die anzahl an teilerfremden zahlen zurück
+//returns the number of numbers that are smaller and coprime to n
 pub fn euler_phi(n: usize) -> usize {
     let factors = factorize(n);
     let mut z = n * (factors[0] - 1);

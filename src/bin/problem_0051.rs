@@ -1,4 +1,4 @@
-use projecteuler::helper;
+use projecteuler::digits;
 use projecteuler::primes;
 
 fn main() {
@@ -25,7 +25,7 @@ fn smallest_prime_family(n: usize) -> usize {
 
 //returns the size of the prime family of the prime p
 fn prime_family_size(p: usize) -> usize {
-    let digits = helper::digits(p);
+    let digits = digits::digits(p);
     //save all digits that are 0, 1, 2 ,...
     let mut digit_groups = vec![vec![]; 10];
     for (i, d) in digits.iter().enumerate() {
@@ -57,7 +57,7 @@ fn prime_family_size(p: usize) -> usize {
                     mask >>= 1;
                 }
 
-                if primes::is_prime(helper::from_digits(&digits)) {
+                if primes::is_prime(digits::from_digits(&digits)) {
                     //dbg!(helper::from_digits(&digits));
                     family_size += 1;
                 }

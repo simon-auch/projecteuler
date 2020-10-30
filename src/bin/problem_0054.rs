@@ -1008,7 +1008,7 @@ fn main() {
         solve();
     });
     assert_eq!(solve(), 376);
-    //dbg!(test());
+    dbg!(test());
     dbg!(solve());
     dbg!(PokerCardValue::N(3) < PokerCardValue::Queen);
 }
@@ -1036,7 +1036,7 @@ fn test() {
 
 fn solve() -> usize {
     let mut acc = 0;
-    for (i, hand) in HANDS.iter().enumerate() {
+    for (_i, hand) in HANDS.iter().enumerate() {
         let hand0 = hand.0;
         let hand1 = hand.1;
 
@@ -1133,7 +1133,7 @@ impl PokerHand {
                 'Q' => cards[i].value = PokerCardValue::Queen,
                 'K' => cards[i].value = PokerCardValue::King,
                 'A' => cards[i].value = PokerCardValue::Ace,
-                x => panic!(
+                _ => panic!(
                     "Encountered unexpected character while parsing Hand {}: {}{}; {}",
                     hand, c0, c1, c0
                 ),
@@ -1143,7 +1143,7 @@ impl PokerHand {
                 'H' => cards[i].suit = PokerCardSuit::H,
                 'S' => cards[i].suit = PokerCardSuit::S,
                 'C' => cards[i].suit = PokerCardSuit::C,
-                x => panic!(
+                _ => panic!(
                     "Encountered unexpected character while parsing Hand {}: {}{}; {}",
                     hand, c0, c1, c0
                 ),

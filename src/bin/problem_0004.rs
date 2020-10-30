@@ -1,4 +1,4 @@
-use projecteuler::helper;
+use projecteuler::digits;
 
 fn main() {
     dbg!(is_palindrom(9009));
@@ -17,6 +17,6 @@ fn main() {
 
 ///returns true if n is a palindrom
 fn is_palindrom(n: usize) -> bool {
-    let digits = helper::digits(n);
+    let digits = digits::digits(n);
     digits.iter().zip(digits.iter().rev()).all(|(a, b)| a == b)
 }

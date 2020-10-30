@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
@@ -12,9 +13,9 @@ fn solve(perms: usize) -> usize {
     let mut counts = std::collections::BTreeMap::new();
     for i in 1.. {
         let cube = i * i * i;
-        let mut digits = helper::digits(cube);
+        let mut digits = digits::digits(cube);
         digits.sort();
-        let key: usize = helper::from_digits(digits.iter().rev());
+        let key: usize = digits::from_digits(digits.iter().rev());
         //dbg!(i, cube, key);
         let entry = counts.entry(key).or_insert((0, cube));
         entry.0 += 1;

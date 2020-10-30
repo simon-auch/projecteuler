@@ -1,4 +1,3 @@
-use projecteuler::helper;
 use projecteuler::primes;
 
 fn main() {

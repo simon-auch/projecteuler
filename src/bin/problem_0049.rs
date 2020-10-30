@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 use projecteuler::primes;
 
@@ -26,9 +27,9 @@ fn solve(n: usize, m: usize) -> Vec<Vec<usize>> {
         .iter()
         .map(|p| {
             (*p, {
-                let mut d = helper::digits(*p);
+                let mut d = digits::digits(*p);
                 d.sort();
-                helper::from_digits(&d)
+                digits::from_digits(&d)
             })
         })
         .collect();

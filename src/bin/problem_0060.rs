@@ -1,11 +1,11 @@
 //works but still a bit slow (around 40s)
 
-use projecteuler::helper;
+use projecteuler::digits;
 use projecteuler::primes;
 
 const SET_SIZE: usize = 5;
 fn main() {
-    dbg!(helper::concat_numbers(1234, 5678));
+    dbg!(digits::concat_numbers(1234, 5678));
     let mut prime_generator = primes::primes_iterator()
         .filter(|x| match x {
             primes::PrimeOrFactor::Prime(_) => true,
@@ -34,7 +34,7 @@ fn main() {
             break;
         }
         //dbg!(&prime_sets);
-        let prime_sets = if helper::digit_sum(p) % 3 == 1 {
+        let prime_sets = if digits::digit_sum(p) % 3 == 1 {
             &mut prime_sets.0
         } else {
             &mut prime_sets.1
@@ -50,7 +50,7 @@ fn main() {
 }
 
 fn is_prime_pair(n: usize, m: usize) -> bool {
-    primes::is_prime(helper::concat_numbers(n, m)) && primes::is_prime(helper::concat_numbers(m, n))
+    primes::is_prime(digits::concat_numbers(n, m)) && primes::is_prime(digits::concat_numbers(m, n))
 }
 
 struct PrimePairTree {

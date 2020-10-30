@@ -1,4 +1,4 @@
-use projecteuler::helper;
+use projecteuler::digits;
 
 fn main() {
     dbg!(solve(4));
@@ -25,7 +25,7 @@ fn solve(power: usize) -> usize {
     let min = 2;
     //dbg!(min);
     for i in min..=max {
-        let dsum = helper::digits_iterator(i)
+        let dsum = digits::digits_iterator(i)
             .map(|d| powers[d as usize])
             .sum::<usize>();
         //dbg!(i,dsum);

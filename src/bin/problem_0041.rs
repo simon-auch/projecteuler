@@ -1,9 +1,11 @@
+use projecteuler::digits;
 use projecteuler::helper;
 use projecteuler::primes;
 
 fn main() {
-    //gets optimized into a nop I think
-    //helper::check_bench(|| {solve(1_000_000);});
+    helper::check_bench(|| {
+        solve();
+    });
     //assert_eq!(solve(), 0);
     //dbg!(is_pandigital(2143));
     dbg!(solve());
@@ -25,7 +27,7 @@ fn solve() -> usize {
 fn is_pandigital(n: usize) -> usize {
     let mut digits = [false; 9];
     let mut max_digit = 0;
-    for d in helper::digits_iterator(n) {
+    for d in digits::digits_iterator(n) {
         let d = d as usize;
         if d == 0 {
             return 0;

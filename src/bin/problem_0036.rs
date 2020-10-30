@@ -1,4 +1,4 @@
-use projecteuler::helper;
+use projecteuler::digits;
 
 fn main() {
     //gets optimized into a nop I think
@@ -15,7 +15,7 @@ fn solve(n: usize) -> usize {
 }
 
 fn is_palindrome_b10(n: usize) -> bool {
-    helper::digits_iterator(n).fold(0, |mut acc, d| {
+    digits::digits_iterator(n).fold(0, |mut acc, d| {
         acc *= 10usize;
         acc + d as usize
     }) == n

@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
@@ -63,7 +64,7 @@ fn solve() -> usize {
             //dbg!(a,b,c);
 
             if 1000<=c {
-                let mut digits: Vec<_> = helper::digits_iterator(c).collect();
+                let mut digits: Vec<_> = digits::digits_iterator(c).collect();
                 digits.sort();
                 digits.dedup();
                 if digits.len() == 4 && digits.into_iter().map(|d| d as usize).all(|d| d!=0 && d!=a && d!=b_1 && d!=b_2 && d!=b_3 && d!=b_4){
@@ -80,18 +81,19 @@ fn solve() -> usize {
     for a_1 in 1..9{
     for a_2 in (1..10).filter(|&x| x!=a_1 && x != 5){
         let a = a_1*10 + a_2;
-        'b_start: 
+        //for some reason rustc says 'b_start is still in scope if used as a label
+        'b_start_2: 
         for b_1 in (1..10).filter(|&x| x!=a_1 && x!= a_2){
         for b_2 in (1..10).filter(|&x| x!=a_1 && x!= a_2 && x!= b_1){
         for b_3 in (1..10).filter(|&x| x!=a_1 && x!= a_2 && x!= b_1 && x!= b_2 && x!=5){
             let b = b_1*100+b_2*10+b_3;
             let c = a*b;
             if c > 9999 {
-                break 'b_start;
+                break 'b_start_2;
             }
             //dbg!(a,b,c);
             if 1000<=c {
-                let mut digits: Vec<_> = helper::digits_iterator(c).collect();
+                let mut digits: Vec<_> = digits::digits_iterator(c).collect();
                 digits.sort();
                 digits.dedup();
                 if digits.len() == 4 && digits.into_iter().map(|d| d as usize).all(|d| d!= 0 && d!=a_1 && d!=a_2 && d!=b_1 && d!=b_2 && d!=b_3){

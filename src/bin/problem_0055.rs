@@ -1,4 +1,4 @@
-use projecteuler::helper;
+use projecteuler::digits;
 
 fn main() {
     assert_eq!(solve(10_000), 249);
@@ -10,8 +10,8 @@ fn solve(n: usize) -> usize {
     'i: for mut i in 0..n as u128 {
         for _ in 0..50 {
             //dbg!(i);
-            i = i + helper::reverse_digits(i);
-            if helper::is_palindrome(i) {
+            i = i + digits::reverse_digits(i);
+            if digits::is_palindrome(i) {
                 continue 'i;
             }
         }

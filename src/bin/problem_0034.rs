@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::factorial;
 use projecteuler::helper;
 
@@ -28,7 +29,7 @@ fn solve() -> usize {
     let max = 2_540_160usize;
     let mut ret = 0;
     for i in 3..=max {
-        let sum = helper::digits_iterator(i)
+        let sum = digits::digits_iterator(i)
             .map(|d| factorials[d as usize])
             .sum::<usize>();
         if i == sum {

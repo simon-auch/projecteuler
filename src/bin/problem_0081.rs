@@ -652,7 +652,7 @@ fn main() {
     dbg!(solve());
 }
 
-//simple djikstra
+//simple dijkstra
 fn solve() -> usize {
     solve_with_movements(
         |cursor| {
@@ -665,7 +665,7 @@ fn solve() -> usize {
     )
 }
 
-//simple djikstra
+//simple dijkstra
 //used to solve 81,82,83 (thats why there are all the generics)
 pub fn solve_with_movements<MF, M, Fin, Starts>(
     movements: MF,
@@ -744,6 +744,8 @@ impl MatrixCursor {
             None
         }
     }
+    //function is actually used (from problem 83), no idea why it does not detect that
+    #[allow(dead_code)]
     pub fn left(mut self) -> Option<Self> {
         if self.j > 0 {
             self.j -= 1;

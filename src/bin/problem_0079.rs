@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 static KEYLOG: &[u32] = &[
@@ -71,11 +72,12 @@ fn solve_2() -> usize {
     passcode
 }
 
+#[allow(dead_code)]
 fn solve() -> usize {
     //reverse each keylog entry and add a one at the beginning. The one serve the purpose of not "forgetting" trailing zeroes.
     let mut keylog: Vec<_> = KEYLOG
         .iter()
-        .map(|k| helper::reverse_digits(*k * 10 + 1))
+        .map(|k| digits::reverse_digits(*k * 10 + 1))
         .collect();
     keylog.sort();
     keylog.dedup();

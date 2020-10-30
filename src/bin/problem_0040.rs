@@ -1,3 +1,4 @@
+use projecteuler::digits;
 use projecteuler::helper;
 
 fn main() {
@@ -30,7 +31,7 @@ fn get_at_index(n: usize) -> usize {
         }
         let i = current_pow + (n - current_index) / current_digits;
         let j = (n - current_index) % current_digits;
-        let mut digits = helper::digits(i);
+        let mut digits = digits::digits(i);
         digits.reverse();
         return digits[j] as usize;
     }
