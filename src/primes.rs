@@ -58,9 +58,8 @@ where
         sieve.resize_with(n.as_(), || Int::zero());
         sieve[1] = Int::one();
         //normally this code could be written with some ranges, but the Int Traits are kind of limited
-        let mut i = Int::one();
+        let mut i = Int::one() + Int::one();
         while i < n {
-            i = i + Int::one();
             if sieve[i.as_()] == Int::zero() {
                 sieve[i.as_()] = i;
                 let mut j = i;
@@ -69,6 +68,7 @@ where
                     j = j + i;
                 }
             }
+            i = i + Int::one();
         }
         Self { sieve: sieve }
     }
