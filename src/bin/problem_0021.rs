@@ -28,11 +28,11 @@ fn sum_divisors_1(n: usize) -> usize {
 }
 
 fn solve_2(n: usize) -> usize {
-    let sieve = primes::sieve_prime_biggest(n);
+    let sieve = primes::SieveDivisor::new(n);
     let mut sum = 0;
     for a in 1..n {
-        let b = primes::sum_of_divisors(a, &sieve);
-        if b < a && a == primes::sum_of_divisors(b, &sieve) {
+        let b = sieve.sum_of_divisors(a);
+        if b < a && a == sieve.sum_of_divisors(b) {
             sum += a + b;
         }
     }

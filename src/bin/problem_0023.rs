@@ -6,10 +6,10 @@ fn main() {
 }
 
 fn solve(n: usize) -> usize {
-    let sieve = primes::sieve_prime_biggest(n + 1);
+    let sieve = primes::SieveDivisor::new(n + 1);
     let mut abundant_numbers = Vec::new();
     for i in 1..=n {
-        if i < primes::sum_of_divisors(i, &sieve) - i {
+        if i < sieve.sum_of_divisors::<usize>(i) - i {
             abundant_numbers.push(i);
         }
     }

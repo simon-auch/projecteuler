@@ -1,3 +1,5 @@
+use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
+
 ///Returns a vector with all prime numbers from 2..n
 pub fn primes(n: usize) -> Vec<usize> {
     if n <= 2 {
@@ -43,41 +45,68 @@ pub fn sieve_bool(n: usize) -> Vec<bool> {
     sieve
 }
 
-///Returns a vector where sieve_prime_biggest(n)[x] equals the greatest prime divisor of x, therefore it equals x iff x is prime
-pub fn sieve_prime_biggest(n: usize) -> Vec<usize> {
-    let mut sieve = Vec::new();
-    sieve.resize_with(n, || 0);
-    sieve[1] = 1;
-    for i in 2..n {
-        if sieve[i] == 0 {
-            sieve[i] = i;
-            let mut j = i;
-            while j < n {
-                sieve[j] = i;
-                j += i;
-            }
-        }
-    }
-    sieve
+pub struct SieveDivisor<Int> {
+    sieve: Vec<Int>,
 }
 
-/// returns the sum of all divisors of n, including n itself
-/// sieve should be a prime sieve as returned by `sieve_prime_biggest`
-pub fn sum_of_divisors(mut n: usize, sieve: &[usize]) -> usize {
-    let mut prod = 1;
-    while n > 1 {
-        let p = sieve[n];
-        n /= p;
-        let mut exp = 1;
-        while sieve[n] == p {
-            exp += 1;
-            n /= p;
+impl<Int> SieveDivisor<Int>
+where
+    Int: AsPrimitive<usize> + FromPrimitive + PrimInt,
+{
+    pub fn new(n: Int) -> Self {
+        let mut sieve = Vec::new();
+        sieve.resize_with(n.as_(), || Int::zero());
+        sieve[1] = Int::one();
+        //normally this code could be written with some ranges, but the Int Traits are kind of limited
+        let mut i = Int::one();
+        while i < n {
+            i = i + Int::one();
+            if sieve[i.as_()] == Int::zero() {
+                sieve[i.as_()] = i;
+                let mut j = i;
+                while j < n {
+                    sieve[j.as_()] = i;
+                    j = j + i;
+                }
+            }
         }
-        //dbg!((p, exp));
-        prod *= (p.pow(exp + 1) - 1) / (p - 1);
-        //dbg!(prod);
+        Self { sieve: sieve }
     }
-    prod
+    pub fn len(&self) -> usize {
+        self.sieve.len()
+    }
+    pub fn get_divisor(&self, n: Int) -> Int {
+        self.sieve[n.as_()]
+    }
+    pub fn is_prime(&self, n: Int) -> bool {
+        self.sieve[n.as_()] == n
+    }
+    // this is the core ability exposed by this Struct.
+    // most other functions rely on it.
+    // given a number n, it calls the closure f with p, exp, where p.pow(exp) is a divisor of n (and maximal in terms of exp)
+    pub fn for_each_divisor<F>(&self, mut n: Int, mut f: F)
+    where
+        F: FnMut(Int, u32),
+    {
+        while n > Int::one() {
+            let p = self.sieve[n.as_()];
+            let mut exp: u32 = 0;
+            while self.sieve[n.as_()] == p {
+                exp += 1;
+                n = n / p;
+            }
+            f(p, exp);
+        }
+    }
+    pub fn sum_of_divisors<Sum: From<Int> + PrimInt>(&self, n: Int) -> Sum {
+        let mut prod = Sum::one();
+        self.for_each_divisor(n, |p, exp| {
+            let p: Sum = std::convert::From::from(p);
+            let exp = exp;
+            prod = prod * (p.pow(exp + 1) - Sum::one()) / (p - Sum::one());
+        });
+        prod
+    }
 }
 
 struct PrimeIterator {

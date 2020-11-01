@@ -13,26 +13,22 @@ fn main() {
 }
 
 fn solve(n: usize) -> usize {
-    let mut primes = primes::sieve_prime_biggest(1_000);
+    let mut primes = primes::SieveDivisor::new(1_000);
     let mut i = 1;
     let mut acc = 0;
     while acc != n {
         i += 1;
         if i >= primes.len() {
-            primes = primes::sieve_prime_biggest(primes.len() * 2);
+            primes = primes::SieveDivisor::new(primes.len() * 2);
         }
-        if primes[i] == i {
+        if primes.is_prime(i) {
             acc = 0;
         } else {
             //count distinct prime factors
-            let mut i = i;
-            let mut j = 1;
-            while primes[i] != i {
-                if primes[i] != primes[i / primes[i]] {
-                    j += 1;
-                }
-                i /= primes[i];
-            }
+            let mut j = 0;
+            primes.for_each_divisor(i, |_, _| {
+                j += 1;
+            });
             if j >= n {
                 acc += 1;
             } else {

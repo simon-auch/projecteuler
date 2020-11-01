@@ -48,14 +48,10 @@ fn solve_2(n: usize, mut k: usize) -> usize {
     if k > n / 2 {
         k = n - k;
     }
-    let sieve = primes::sieve_prime_biggest(n + 1);
-    let sum_of_prime_factors = |mut v: usize| {
+    let sieve = primes::SieveDivisor::new(n + 1);
+    let sum_of_prime_factors = |v: usize| {
         let mut sum = 0;
-        while v > 1 {
-            let p = sieve[v];
-            sum += p;
-            v /= p;
-        }
+        sieve.for_each_divisor(v, |p, exp| sum += p * exp as usize);
         sum
     };
     let mut sum = 0;
