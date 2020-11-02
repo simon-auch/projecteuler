@@ -1,5 +1,5 @@
 #[inline(always)]
-pub fn time_it<F: Fn() -> ()>(f: F, loops: usize) -> f64 {
+pub fn time_it<F: Fn() -> R, R>(f: F, loops: usize) -> f64 {
     use std::time::Instant;
     let now = Instant::now();
     for _ in 0..loops {
@@ -21,9 +21,17 @@ pub fn get_usize() -> usize {
         .expect("Could not parse input as usize")
 }
 
-pub fn check_bench<F: Fn() -> ()>(f: F) {
+pub fn check_bench<F: Fn() -> R, R>(f: F) {
     let mut loops = 1;
-    while loops < 100_000_000 && time_it(|| f(), loops) < 1.0 {
+    while loops < 100_000_000 && time_it(|| black_box(&f)(), loops) < 1.0 {
         loops *= 10;
+    }
+}
+
+pub fn black_box<T>(dummy: T) -> T {
+    unsafe {
+        let ret = core::ptr::read_volatile(&dummy);
+        core::mem::forget(dummy);
+        ret
     }
 }
