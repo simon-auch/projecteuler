@@ -1006,102 +1006,20 @@ static PAIRS: &[(u32, u32)] = &[
 use num::BigUint;
 use projecteuler::primes;
 fn main() {
-    //helper::check_bench(|| {
-    //    solve();
-    //});
-    //assert_eq!(solve(), 8739992577);
-    dbg!(solve_2());
-}
-
-fn solve_2() -> usize {
-    PAIRS
-        .iter()
-        .map(|(base, exp)| BigUint::from(*base).pow(*exp))
-        .enumerate()
-        .max_by(|(i, a), (j, b)| {
-            dbg!(i, j);
-            a.cmp(b)
-        })
-        .unwrap()
-        .0
+    helper::check_bench(|| {
+        solve();
+    });
+    assert_eq!(solve(), 709);
+    dbg!(solve());
 }
 
 fn solve() -> usize {
-    let max_base = PAIRS.iter().map(|(base, _pow)| *base).max().unwrap();
-    let sieve = primes::SieveDivisor::new(max_base);
-
     PAIRS
         .iter()
-        .map(|(base, exp)| {
-            let mut divisors = Vec::new();
-            sieve.for_each_divisor(*base, |p, pow| {
-                divisors.push((p, pow * *exp));
-            });
-            divisors
-        })
         .enumerate()
-        .max_by(|(_, a), (_, b)| {
-            let mut i = 0;
-            let mut j = 0;
-            let mut prod_i = BigUint::from(1u8);
-            let mut prod_j = BigUint::from(1u8);
-
-            loop {
-                let p_i = BigUint::from(a[i].0);
-                let p_j = BigUint::from(b[j].0);
-                let e_i = a[i].1 as u32;
-                let e_j = b[j].1 as u32;
-                if p_i < p_j {
-                    prod_i *= p_i.pow(e_i);
-                    i += 1;
-                } else if p_i > p_j {
-                    prod_j *= p_j.pow(e_j);
-                    j += 1;
-                } else {
-                    if e_i < e_j {
-                        prod_j *= p_j.pow(e_j - e_i);
-                    } else {
-                        prod_i *= p_i.pow(e_i - e_j);
-                    }
-                    j += 1;
-                    i += 1;
-                }
-                if i == a.len() || j == b.len() {
-                    break;
-                }
-            }
-            while i < a.len() {
-                let p_i = BigUint::from(a[i].0);
-                let e_i = a[i].1 as u32;
-                prod_i *= p_i.pow(e_i);
-                i += 1;
-            }
-
-            while j < b.len() {
-                let p_j = BigUint::from(b[j].0);
-                let e_j = b[j].1 as u32;
-                prod_j *= p_j.pow(e_j);
-                j += 1;
-            }
-
-            prod_i.cmp(&prod_j)
-        })
+        .map(|(i, (b, e))| (i, (*e as f64) * ((*b as f64).log2())))
+        .max_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap())
         .unwrap()
         .0
-}
-
-/// sieve should be a prime sieve as returned by `sieve_prime_biggest`
-/// returns the list of all (prime, pow) contained in n
-pub fn list_divisors(mut n: usize, sieve: &[usize]) -> Vec<(usize, usize)> {
-    let mut acc = Vec::new();
-    while n > 1 {
-        let p = sieve[n];
-        let mut exp = 0;
-        while sieve[n] == p {
-            exp += 1;
-            n /= p;
-        }
-        acc.push((p, exp))
-    }
-    acc
+        + 1
 }
