@@ -6,6 +6,7 @@ fn main() {
         solve(100);
     });
     assert_eq!(solve(100), 272);
+    dbg!(solve(100));
 }
 
 fn solve(mut n: usize) -> usize {
