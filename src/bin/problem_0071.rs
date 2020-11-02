@@ -15,7 +15,7 @@ fn main() {
     );
 }
 
-fn solve(d: usize) -> Fraction {
+fn solve(d: usize) -> Fraction<usize> {
     let mut low = Fraction::new(0, 1);
     let high = Fraction::new(3, 7);
     for i in 3..=d {
