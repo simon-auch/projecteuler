@@ -83,12 +83,16 @@ pub fn concat_numbers(n: usize, m: usize) -> usize {
     n * (10usize.pow(i)) + m
 }
 
-pub fn digit_sum(mut n: usize) -> usize {
-    let mut acc = 0;
-    while n > 0 {
-        let r = n % 10;
-        acc += r;
-        n /= 10;
+pub fn digit_sum<Int>(mut n: Int) -> Int
+where
+    Int: PrimInt + FromPrimitive,
+{
+    let mut acc = Int::zero();
+    let ten = Int::from(10u8).unwrap();
+    while n > Int::zero() {
+        let r = n % ten;
+        acc = acc + r;
+        n = n / ten;
     }
     acc
 }
