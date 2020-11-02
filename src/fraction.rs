@@ -1,5 +1,5 @@
 use gcd::Gcd;
-use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
+use num::traits::PrimInt;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Fraction<Int> {
