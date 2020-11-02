@@ -1003,8 +1003,6 @@ static PAIRS: &[(u32, u32)] = &[
     (13846, 725685),
 ];
 
-use num::BigUint;
-use projecteuler::primes;
 fn main() {
     helper::check_bench(|| {
         solve();
