@@ -28,7 +28,7 @@ pub fn check_bench<F: Fn() -> R, R>(f: F) {
     }
 }
 
-pub fn black_box<T>(dummy: T) -> T {
+fn black_box<T>(dummy: T) -> T {
     unsafe {
         let ret = core::ptr::read_volatile(&dummy);
         core::mem::forget(dummy);
