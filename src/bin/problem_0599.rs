@@ -1,7 +1,85 @@
 #![feature(map_first_last)]
 use projecteuler::helper;
+use projecteuler::binomial;
 
 fn main() {
+    assert_eq!(solve(2), 183);
+    assert_eq!(solve(10), 12_395_526_079_546_335);
+    dbg!(solve(2));
+    dbg!(solve(10));
+}
+
+fn solve(colors: usize)-> usize {
+    //What do I know
+    /*
+    2x2x2 cube has 24 faces
+    n**24 would therefore be the total amount of possible initial colorings.
+    It should be possible to shave of a few factors by pinning the first color etc
+
+    holding one corner fixed a cube with side length 2 can reach a total of 3674160 configurations (each face colored differently)
+    if not holding the corner fixed, there are a total of 88179840 configurations reachable (each face different)
+
+    fact: 88179840/3674160 = 24 (6 sides * 4 rotations maybe?)
+
+    all possible configurations a cube has have:
+    colors ** 24
+
+    all possible ways to rotate and place the cubelets:
+    264539520 = 8! * 3**8 (8!: where each cubelet goes, 3**8 the rotation of each piece)
+
+    fact: 8! * 3**8 / 88179840 = 3
+    This means that given a cube coloring where each face is unique, there are exactly 3 equivalence groups
+
+    given c colors, how many different ways to color a cubelet exist?
+    *different also implies different after rotations (so 001 and 010 are the same)
+    for 1 color : 000
+    for 2 colors: 000, 111, 001, 011
+    for 3 colors: 000, 111, 001, 011, 222, 002, 022, 112, 122, 012, 021
+    T(1) = 1
+    T(c) = T(c-1) + 1 + (c-1) * 2 + (c-1) * (c-2) * 2 / 2
+         = T(c-1) + 1 + (c-1) * 2 + (c-1) * (c-2)
+         = T(c-1) + 1 + (c-1) * (2 + (c-2))
+         = T(c-1) + 1 + c * (c-1)
+    
+    given there are n essentially different colored cubelets, how many ways are there to choose 8?
+    (This is basically "ziehen mit zurücklegen ohne reihenfolge")
+    (n + 8 - 1) C (8)
+
+    How many rotation invariant cubelets are there with c colors?
+    c
+    */
+    /*
+    println!("Cubelet colorings:");
+    for c in 1..=10 {
+        println!("c: {:02}, colorings: {}", c, cubelet_colorings(c));
+    }
+    println!("Cubelet colorings check:");
+    for c in 1..=10 {
+        println!("c: {:02}, colorings: {}", c, check_cubelet_colorings(c));
+    }
+
+    println!("cubelet selections:");
+    for c in 1..=10 {
+        println!("c: {:02}, cubelet selections: {}", c, binomial::binomial_coefficient(cubelet_colorings(c) + 7, 8));
+    }
+
+    println!("Cubelet selections without rotation invariant colorings:");
+    for c in 2..=10 {
+        println!("c: {:02}, cubelet selections: {}", c, binomial::binomial_coefficient(cubelet_colorings(c) - c as usize + 7, 8));
+    }
+    */
+
+    let cubelet_colorings = cubelet_colorings(colors as u8);
+    let cubelet_selections = binomial::binomial_coefficient(cubelet_colorings + 7, 8);
+    let cubelet_selections_without_rotation_invariant_colorings = binomial::binomial_coefficient(cubelet_colorings - colors + 7, 8);
+    //dbg!(cubelet_colorings, cubelet_selections, cubelet_selections_without_rotation_invariant_colorings);
+    //every cubelet selection WITH a rotation invariant cublet coloring can reach all possible configurations
+    //every cubelet selection WITHOUT a rotation invariant cublet coloring represents 3 different essential cube colorings (rotating one piece)
+    cubelet_selections + cubelet_selections_without_rotation_invariant_colorings * 2
+}
+
+#[allow(unused)]
+fn cube_configurations_brute_force(){
     #[rustfmt::skip]
     let start: [u8;24] = [
         0,0,
@@ -22,13 +100,14 @@ fn main() {
     ];
     let mut new = std::collections::BTreeSet::new();
     let mut seen = std::collections::HashSet::new();
-    new.insert(start);
-    seen.insert(start);
+    new.insert(compress_2x2(&start));
+    seen.insert(compress_2x2(&start));
 
-    //let moves = Cube::get_basic_moves(2);
-    let moves = Cube::get_all_moves(2);
+    let moves = Cube::get_basic_moves(2);
+    //let moves = Cube::get_all_moves(2);
 
     while let Some(cube) = new.pop_first() {
+        let cube = decompress_2x2(cube);
         //dbg_cube(&cube);
         if seen.len() % 100000 == 0 {
             dbg!(seen.len(), new.len());
@@ -36,6 +115,7 @@ fn main() {
         for movement in moves.iter() {
             //dbg_cube(&movement);
             let next = apply_move_2x2(&cube, movement);
+            let next = compress_2x2(&next);
             //dbg_cube(&next);
             if let None = seen.replace(next){
                 new.insert(next);
@@ -47,48 +127,176 @@ fn main() {
     }
 
     dbg!(seen.len());
-
-    dbg!(solve(2));
 }
 
-fn solve(colors: usize) {
-    //how many total cube arrangements can here be with n colors?
-    /*
-    2x2x2 cube has 24 faces
-    n**24 would therefore be the total amount of possible initial colorings.
-    It should be possible to shave of a few factors by pinning the first color etc
-    */
-    let mut seen = BitVec::with_capacity(colors.pow(24));
-    let mut colorings = 0;
+//returns the number of *different* cubelet colorings with c colors
+fn cubelet_colorings(c: u8) -> usize {
+    match c {
+        1 => 1,
+        c => cubelet_colorings(c-1) + 1 + c as usize * (c-1) as usize
+    }
 }
 
-fn coloring_to_usize(cube: [u8;24], colors: usize) -> usize {
-    cube.iter().fold(0, |acc, &c| acc * colors + c as usize)
-}
-
-struct BitVec{
-    data: Vec<u8>,
-}
-impl BitVec {
-    fn with_capacity(bits: usize) -> Self {
-        Self{
-            data: Vec::with_capacity((bits + 7)/8)
+fn check_cubelet_colorings(c: u8) -> usize {
+    let mut acc = Vec::with_capacity((c as usize).pow(3));
+    for c1 in 0..c {
+        for c2 in 0..c{
+            for c3 in 0..c {
+                acc.push([c1,c2,c3]);
+            }
         }
     }
-    
-    fn is_set(&self, index: usize) -> bool {
-        let high = index>>3;
-        let low = index & 0b111;
-        (self.data[high] >> low) & 0b1 == 1
+    let mut i = 0;
+    while i < acc.len(){
+        let mut coloring = acc[i];
+        for _ in 0..3 {
+            for j in i+1..acc.len(){
+                while j<acc.len() && coloring == acc[j]{
+                    acc.swap_remove(j);
+                }
+            }
+            let temp = coloring[0];
+            coloring[0] = coloring[1];
+            coloring[1] = coloring[2];
+            coloring[2] = temp;
+        }
+        i+=1;
     }
-
-    fn set(&mut self, index: usize) {
-        let high = index >> 3;
-        let low = index & 0b111;
-        self.data[high] |= 0b1 << low;
-    }
+    //dbg!(&acc);
+    acc.len()
 }
 
+fn compress_2x2(cube: &[u8;24]) -> u128 {
+    //there can be at the most 24 different colors -> 5 bit per face
+    //24 faces -> 5*24 bit -> 120 bit
+    cube.iter().rev().fold(0, |acc, &c| (acc << 5) | c as u128)
+}
+
+fn decompress_2x2(mut cube: u128) -> [u8;24]{
+    //just.. maybe.. a macro that repeats an arbitrary expression x times?
+    [
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+        {
+            let r = cube & 0b11111;
+            cube >>= 5;
+            r as u8
+        },
+    ]
+}
 
 fn apply_move_2x2(cube: &[u8;24], movement: &[usize]) -> [u8;24] {
     [
