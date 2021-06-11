@@ -34,14 +34,14 @@ fn solve(n: usize, bound: usize) -> usize {
     line.push(1);
     let mut i = 1;
     while i < n {
-        i+= 1;
-        
+        i += 1;
+
         if count != 0 && line.len() <= 3 {
             //dbg!(&line, count);
-            {   
-                let total_elements = i+1;
-                let missing = total_elements - line.len()*2;
-                count += euler_range(missing, missing + n-i);
+            {
+                let total_elements = i + 1;
+                let missing = total_elements - line.len() * 2;
+                count += euler_range(missing, missing + n - i);
             }
             //special case the linear increasing second value
             if line.len() >= 2 {
@@ -69,7 +69,7 @@ fn solve(n: usize, bound: usize) -> usize {
             }
             break;
         }
-        
+
         let last = if count == 0 && i & 0b1 == 0 {
             let last = line.len() - 1;
             let new = line[last] * 2;
@@ -93,9 +93,9 @@ fn solve(n: usize, bound: usize) -> usize {
             }
         }
         //dbg!(&line);
-        if line.len() < i/2+1 {
+        if line.len() < i / 2 + 1 {
             //how many elements the row should have:
-            let total_elements = i+1;
+            let total_elements = i + 1;
             //how many elements the line has
             count += total_elements - line.len() * 2;
             //dbg!(i,total_elements,line.len(),count);
