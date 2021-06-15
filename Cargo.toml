@@ -8,6 +8,9 @@ edition = "2018"
 
 #default-run = "main"
 
+[profile.release]
+overflow-checks = false
+
 [dependencies]
 gcd = "2.*"
 num = "0.3"
