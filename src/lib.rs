@@ -8,3 +8,4 @@ pub mod modulo;
 pub mod partition;
 pub mod permutation;
 pub mod primes;
+pub mod square_roots;

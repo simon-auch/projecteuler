@@ -1,4 +1,7 @@
-use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
+use num::{
+    traits::{AsPrimitive, FromPrimitive, NumAssignRef, PrimInt, SaturatingMul},
+    Saturating,
+};
 
 ///Returns a vector with all prime numbers from 2..n
 pub fn primes(n: usize) -> Vec<usize> {
@@ -180,19 +183,22 @@ pub fn primes_iterator() -> impl Iterator<Item = PrimeOrFactor> {
 }
 
 ///returns (floor(sqrt(n)), ceil(sqrt(n)))
-pub fn sqrt(n: usize) -> (usize, usize) {
+pub fn sqrt_with_lower_bound_hint<N: SaturatingMul + NumAssignRef + Ord + Copy>(
+    n: N,
+    lower_bound_hint: N,
+) -> (N, N) {
     //first we do a really shitty sqrt approximation
     use core::cmp::Ordering;
-    let mut sqrt_range = (0, n);
-    while sqrt_range.1 > 1 {
-        let mid = sqrt_range.0 + sqrt_range.1 / 2;
-        match mid.saturating_mul(mid).cmp(&n) {
+    let mut sqrt_range = (lower_bound_hint, n);
+    while sqrt_range.1 > N::one() {
+        let mid = sqrt_range.0 + sqrt_range.1 / (N::one() + N::one());
+        match mid.saturating_mul(&mid).cmp(&n) {
             Ordering::Equal => {
-                sqrt_range = (mid, 1);
+                sqrt_range = (mid, N::one());
                 break;
             }
             Ordering::Greater => {
-                sqrt_range.1 = sqrt_range.1 / 2;
+                sqrt_range.1 = sqrt_range.1 / (N::one() + N::one());
             }
             Ordering::Less => {
                 sqrt_range.1 = sqrt_range.0 + sqrt_range.1 - mid;
@@ -202,18 +208,21 @@ pub fn sqrt(n: usize) -> (usize, usize) {
     }
 
     let sqrt = sqrt_range.0;
-    let ret = if sqrt * sqrt == n {
-        (sqrt, sqrt)
-    } else if sqrt * sqrt > n {
-        (sqrt - 1, sqrt)
-    } else {
-        (sqrt, sqrt + 1)
+    let ret = match n.cmp(&(sqrt * sqrt)) {
+        Ordering::Less => (sqrt - N::one(), sqrt),
+        Ordering::Equal => (sqrt, sqrt),
+        Ordering::Greater => (sqrt, sqrt + N::one()),
     };
 
     assert!(ret.0 * ret.0 <= n);
     assert!(ret.1 * ret.1 >= n);
 
     ret
+}
+
+///returns (floor(sqrt(n)), ceil(sqrt(n)))
+pub fn sqrt<N: SaturatingMul + NumAssignRef + Ord + Copy>(n: N) -> (N, N) {
+    sqrt_with_lower_bound_hint(n, N::zero())
 }
 
 pub fn factorize(n: usize) -> Vec<usize> {
