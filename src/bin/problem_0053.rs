@@ -1,4 +1,4 @@
-use projecteuler::helper;
+use projecteuler::{helper, square_roots};
 
 fn main() {
     helper::check_bench(|| {
@@ -57,7 +57,7 @@ fn solve(n: usize, bound: usize) -> usize {
                 //i < (\sqrt(8*bound + 1) + 1)/2
                 //i*2 -1 < \sqrt(8*bound + 1)
                 //i*2 -1 < ceil(\sqrt(8*bound + 1))
-                let (sqrt_floor, _sqrt_ceil) = projecteuler::primes::sqrt(8 * bound + 1);
+                let (sqrt_floor, _sqrt_ceil) = square_roots::sqrt(8 * bound + 1);
                 let mut i = (sqrt_floor + 1) / 2;
                 while i * (i + 1) / 2 < bound {
                     dbg!("dingding");

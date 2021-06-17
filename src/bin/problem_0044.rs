@@ -1,5 +1,5 @@
 use projecteuler::helper;
-use projecteuler::primes;
+use projecteuler::square_roots;
 
 fn main() {
     //gets optimized into a nop I think
@@ -59,7 +59,7 @@ fn get_pentagonal(n: usize) -> usize {
 }
 
 fn is_pentagonal(n: usize) -> bool {
-    let (floor, ceil) = primes::sqrt(24 * n + 1);
+    let (floor, ceil) = square_roots::sqrt(24 * n + 1);
     if floor != ceil {
         return false;
     }

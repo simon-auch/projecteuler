@@ -1,7 +1,5 @@
-use num::{
-    traits::{AsPrimitive, FromPrimitive, NumAssignRef, PrimInt, SaturatingMul},
-    Saturating,
-};
+use crate::square_roots;
+use num::traits::{AsPrimitive, FromPrimitive, PrimInt};
 
 ///Returns a vector with all prime numbers from 2..n
 pub fn primes(n: usize) -> Vec<usize> {
@@ -182,49 +180,6 @@ pub fn primes_iterator() -> impl Iterator<Item = PrimeOrFactor> {
     PrimeIterator::new()
 }
 
-///returns (floor(sqrt(n)), ceil(sqrt(n)))
-pub fn sqrt_with_lower_bound_hint<N: SaturatingMul + NumAssignRef + Ord + Copy>(
-    n: N,
-    lower_bound_hint: N,
-) -> (N, N) {
-    //first we do a really shitty sqrt approximation
-    use core::cmp::Ordering;
-    let mut sqrt_range = (lower_bound_hint, n);
-    while sqrt_range.1 > N::one() {
-        let mid = sqrt_range.0 + sqrt_range.1 / (N::one() + N::one());
-        match mid.saturating_mul(&mid).cmp(&n) {
-            Ordering::Equal => {
-                sqrt_range = (mid, N::one());
-                break;
-            }
-            Ordering::Greater => {
-                sqrt_range.1 = sqrt_range.1 / (N::one() + N::one());
-            }
-            Ordering::Less => {
-                sqrt_range.1 = sqrt_range.0 + sqrt_range.1 - mid;
-                sqrt_range.0 = mid;
-            }
-        }
-    }
-
-    let sqrt = sqrt_range.0;
-    let ret = match n.cmp(&(sqrt * sqrt)) {
-        Ordering::Less => (sqrt - N::one(), sqrt),
-        Ordering::Equal => (sqrt, sqrt),
-        Ordering::Greater => (sqrt, sqrt + N::one()),
-    };
-
-    assert!(ret.0 * ret.0 <= n);
-    assert!(ret.1 * ret.1 >= n);
-
-    ret
-}
-
-///returns (floor(sqrt(n)), ceil(sqrt(n)))
-pub fn sqrt<N: SaturatingMul + NumAssignRef + Ord + Copy>(n: N) -> (N, N) {
-    sqrt_with_lower_bound_hint(n, N::zero())
-}
-
 pub fn factorize(n: usize) -> Vec<usize> {
     if n == 1 {
         return vec![];
@@ -233,7 +188,7 @@ pub fn factorize(n: usize) -> Vec<usize> {
         return vec![n];
     }
 
-    let (_sqrt_floor, sqrt_ceil) = sqrt(n);
+    let (_sqrt_floor, sqrt_ceil) = square_roots::sqrt(n);
     //only one factor can be bigger than the sqrt.
     //if no factor is smaller or equal the sqrt, the number is prime (as it cannot have factors)
 

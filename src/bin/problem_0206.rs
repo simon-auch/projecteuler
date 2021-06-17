@@ -1,6 +1,6 @@
 use projecteuler::digits;
 use projecteuler::helper;
-use projecteuler::primes;
+use projecteuler::square_roots;
 
 fn main() {
     helper::check_bench(|| {
@@ -11,8 +11,8 @@ fn main() {
 }
 
 fn solve() -> usize {
-    let (mut low, _) = primes::sqrt(1020304050607080900);
-    let (_, high) = primes::sqrt(1929394959697989990);
+    let (mut low, _) = square_roots::sqrt(1020304050607080900);
+    let (_, high) = square_roots::sqrt(1929394959697989990);
     low = (low / 10) * 10;
     (low..=high).step_by(10).filter(is_answer).next().unwrap()
 }
